@@ -1,4 +1,427 @@
-test
-code
-OptCard
-Optimized Flachcard "Words Are Inscribed on Your Brain."
+function doGet(request){
+    var sheet = SpreadsheetApp.openById("1iOEDlj3yqWlsKhCjButqxC1NBwo-IEwNuf78QiQm8p8");//SpreadSheetのURLを取得
+    //var result = {"status": "SUCCESS desu"};
+    var sh = SpreadsheetApp.getActiveSheet();
+    
+    try{
+        var name = request.parameter.nameda;//Flutterからの値を受ける。form.dartで宣言したラベルをもとに参照される。
+        //var email = request.parameter.email;
+        //var mobileNo = request.parameter.mobileNo;
+        //var feedback = request.parameter.feedback;
+
+        //var rowData = sheet.appendRow([name]);//SpreadSheetへの書き込み
+        //var rowData = sheet.appendRow([name, email, mobileNo, feedback]);
+
+        //var place = name;//Flutterで受けた値をplaceへ代入
+        //var value = sheet.getRange(place).getValue();//placeで指定した箇所の値を取り出す。
+        
+        var date  = "";
+        var dcdc  = 2;
+        var today = "";
+            
+        if (name === 'T'){
+            dcdc = 1;
+        }else if (name === 'F'){
+            dcdc = 0;
+        }
+        
+        if (name === 'Sun'){
+            date = 1;
+        }else if(name === 'Mon'){
+            date = 2;
+        }else if(name === 'Tue'){
+            date = 3;
+        }else if(name === 'Wed'){
+            date = 4;
+        }else if(name === 'Thu'){
+            date = 5;
+        }else if(name === 'Fri'){
+            date = 6;
+        }else if(name === 'Sat'){
+            date = 7;
+        }else{
+            date = 8;
+        }
+    }catch(exc){
+        result = {"status": "FAILED desuyo", "message": exc};//エラーの場合はこの動作を行う//実際ここら辺あんまりわかってない。
+        var date = 9;
+    }
+        
+    var flag  = 0;
+    var itchi = 2;
+    var place = "E" + itchi;
+    var tempo = "G" + itchi;
+    var value = sheet.getRange(place).getValue();
+    var fin_flg = 0;
+    var flag = 1;
+    var daypl = 0;
+    var datep = 0;
+    var today = 0;
+    var priin = 0;
+    var lastRow = sheet.getLastRow();//最後の行を取得
+    var owaridayo = 0;
+
+    if (dcdc === 1 || dcdc === 0){//2ページ目のボタンの処理
+        itchi = 2;
+        var place = "G" + itchi;//dateのセル
+        for (flag = 1; flag <= lastRow; flag ++){
+        var value = sheet.getRange(place).getValue();//dateの値を取り出す
+        if (value !== 1){//dateを参照してセルを検索する
+            itchi += 1;
+            var place = "G" + itchi;//dateのセル
+            owaridayo = 1;
+            //Browser.msgBox(value);
+        }else if (value === 1){
+            flag = lastRow;//Flutterから送られてきた曜日とdateのセルが一致したら終了
+            var place = "G" + itchi;//dateのセル
+            sheet.getRange(place).setValue(0);//指定したセルに値を書き込む
+            //var value = sheet.getRange(place).getValue();//dateの値を取り出す
+            owaridayo = 0;
+            }
+        }
+    }
+    
+    if (dcdc === 1 && owaridayo === 0){ //正解だった時の処理//////////////////////////////////////////////////////////////////////////////////////////////////////////
+        var dayon = "F" + itchi;
+        var today = sheet.getRange(dayon).getValue();//dateの値を取り出す
+        if(today === 0){
+        var place = "E" + itchi;
+        //sheet.getRange("I2").setValue(place);//指定したセルに値を書き込む
+        //var datep = sheet.getRange(place).getValue();//dateの値を取り出す
+        var datep = 0;//dateの値を取り出す
+        var dateom = "I" + 3;//dateonのセルの位置
+        var dateom_value = sheet.getRange(dateom).getValue();//dateonの値を取り出す
+        var answer = "D" + itchi;
+        var ans_p = sheet.getRange(answer).getValue();//answerの値を取り出す
+        
+        if (ans_p === 0){
+            var ransu = Math.floor(Math.random()*100);
+            if (ransu >= 50){
+                datep = dateom_value + 2;
+            }
+            if (ransu < 50){
+                datep = dateom_value + 3;
+            }
+            if(datep == 10){
+                datep += 1;
+            }
+        }
+        else if (ans_p === 1){
+            var ransu = Math.floor(Math.random()*100);
+            if (ransu >= 50){
+                datep = dateom_value + 5;
+            }
+            if (ransu < 50){
+                datep = dateom_value + 6;
+            }
+            if(datep == 10){
+                datep += 1;
+            }
+        }
+        else if (ans_p === 2){
+            var ransu = Math.floor(Math.random()*100);
+            if (ransu >= 50){
+                datep = dateom_value + 8;
+            }
+            if (ransu < 50){
+                datep = dateom_value + 9;
+            }
+            if(datep == 10){
+                datep += 1;
+            }
+        }
+        else if (ans_p === 3){
+            var ransu = Math.floor(Math.random()*100);
+            if (ransu > 66){
+                  datep = dateom_value + 18;
+            }
+            if (ransu < 33){
+                datep = dateom_value + 19;
+            }
+            else {
+                datep = dateom_value + 20;
+            }
+        }
+        else if (ans_p === 4){
+            var ransu = Math.floor(Math.random()*100);
+            if (ransu > 66){
+                  datep = dateom_value + 27;
+            }
+            if (ransu < 33){
+                datep = dateom_value + 28;
+            }
+            else {
+                datep = dateom_value + 29;
+            }
+        }
+        
+        ans_p += 1;
+        
+        if(ans_p >= 6){
+        var finish = "C" + itchi;
+        var fin_p = sheet.getRange(finish).getValue();//dateの値を取り出す
+        fin_p += 1;
+        sheet.getRange(finish).setValue(fin_p);//finishに終了フラグを立てる
+        var finish = "E" + itchi;
+        datep = 0;
+        }
+        sheet.getRange(place).setValue(datep);//指定したセルに値を書き込む
+        sheet.getRange(answer).setValue(ans_p);//指定したセルに値を書き込む
+        sheet.getRange(dayon).setValue(0);//dateを0に戻しておく
+        
+          var priop = "H" + itchi;
+          //priin = 3;
+          priin = Math.floor(Math.random()*100);
+          sheet.getRange(priop).setValue(priin);
+        }
+        if(today !== 0){
+        var place = "E" + itchi;
+        var datep = sheet.getRange(place).getValue();//dateの値を取り出す
+        datep += 1;
+        
+        var place4 = "D" + itchi;
+        var datep4 = sheet.getRange(place4).getValue();//dateの値を取り出す
+        if(datep4 >= 5){
+            datep += 10;
+        }
+        //sheet.getRange("I3").setValue(place);//指定したセルに値を書き込む
+        sheet.getRange(place).setValue(datep);//指定したセルに値を書き込む
+        
+        var dayon = "F" + itchi;
+        sheet.getRange(dayon).setValue(0);//dateを0に戻しておく
+        var priop = "H" + itchi;
+        //priin = 2;
+        priin = Math.floor(Math.random()*50);
+        sheet.getRange(priop).setValue(priin);
+        
+        var answer = "D" + itchi;
+        var answer_next = sheet.getRange(answer).getValue();//dateの値を取り出す
+        if(answer_next > 1){
+            var an_value = answer_next - 1;
+            sheet.getRange(answer).setValue(an_value);
+            }
+        else{
+            sheet.getRange(answer).setValue(0);
+            }
+        }
+        var d_flag = "I" + 4;//todayのセルの値を参照
+        sheet.getRange(d_flag).setValue("0");//指定したセルに値を書き込む
+
+    }else if (dcdc === 0 && owaridayo === 0){//不正解だった時の処理//////////////////////////////////////////////////////////////////////////////////////////////////////////
+        var dayon = "F" + itchi;
+        var daypl = sheet.getRange(dayon).getValue();//dateの値を取り出す
+        daypl += 1;
+        sheet.getRange(dayon).setValue(daypl);//指定したセルに値を書き込む
+        
+        //var dayon = "F" + itchi;
+        //sheet.getRange(dayon).setValue(0);//dateを0に戻しておく
+        
+        var priop = "H" + itchi;
+        var priin_next = sheet.getRange(priop).getValue();//priorityの値を取り出す
+        if(priin_next > 0){
+            priin_next = 0;
+        }
+        priin = priin_next -10;
+        sheet.getRange(priop).setValue(priin);       
+
+        var d_flag = "I" + 4;//todayのセルの値を参照
+        sheet.getRange(d_flag).setValue("0");//指定したセルに値を書き込む
+    }
+    
+    if (dcdc === 2){//1ページ目の処理////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //ここでitchiの値を定義して起きたい
+    //現在位置と保持している位置の2つの値を比較する
+    
+    var d_count = 0;
+    for (d_count = 0; d_count <= 20; d_count ++){
+        var d_flag = "I" + 4;//todayのセルの値を参照
+        var df_val = sheet.getRange(d_flag).getValue();//d_flagの値を取り出す
+        if (df_val === 1){
+            Utilities.sleep(500); // シートの処理完了を待つ(milli second)
+            var d_flag2 = "I" + 5;//todayのセルの値を参照
+            sheet.getRange(d_flag2).setValue(d_count);//指定したセルに値を書き込む
+            //var d_flag = "I" + 4;//todayのセルの値を参照
+            //sheet.getRange(d_flag).setValue("0");//指定したセルに値を書き込む
+        }
+    }
+    var itchi_temp = 1;
+    var itchi_now  = 1;
+    var itchi_ex   = 1;
+    var place_temp = 1;//dateの位置を格納する
+    var place_ex   = 1;//dateの位置を格納する
+    var value_temp = 10;//dateの値を格納する
+    var value_ex   = 1;//dateの値を格納する
+    var tango_ari  = 0;
+    var nikome_ari = 0;
+    //var ikkodake   = 0;
+    var date_counter = 0;
+    var p_counter = 0;
+    var itchi_koko = 2;
+
+    var dateon = "I" + 2;//dateonのセルの位置//日付カウンター
+    var dateom = "I" + 3;//dateonのセルの位置
+    
+    value_dateon = sheet.getRange(dateon).getValue();//dateonの値を取り出す
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    if(value_dateon !== date){
+        sheet.getRange(dateon).setValue(date);//指定したセルに値を書き込む
+        date_counter = sheet.getRange(dateom).getValue();//dateonの値を取り出す
+        date_counter += 1;
+        if(date_counter == 10){
+            date_counter += 1;
+        }
+        sheet.getRange(dateom).setValue(date_counter);//指定したセルに値を書き込む
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        date_counter = sheet.getRange(dateom).getValue();//dateonの値を取り出す
+        date = date_counter;//20200614_追加
+        
+    for (flag = 1; flag <= lastRow; flag ++){
+        if (date !== value_temp){//dateを参照してセルを検索する
+            itchi_temp += 1;//一致しなかったら次のセルへ
+            place_temp = "E" + itchi_temp;//dateのセル
+            value_temp = sheet.getRange(place_temp).getValue();//dateの値を取り出す
+            
+            //tango_ari = 0;
+            //Browser.msgBox(value);
+        }else if (date === value_temp){//一致したときの処理
+            //var imadoko = "L" + itchi_temp;//priorityのセル
+            //sheet.getRange(imadoko).setValue(value_temp);//指定したセルに値を書き込む
+            //var imadoko = "J" + itchi_temp;//priorityのセル
+            //sheet.getRange(imadoko).setValue(value_temp);//指定したセルに値を書き込む
+            if(tango_ari === 1){
+                nikome_ari = 1;//2つ目の単語があった時の処理
+                //sheet.getRange("I7").setValue(nikome_ari);//指定したセルに値を書き込む
+            }
+            tango_ari = 1;//当日に該当する単語があることを示すフラグ
+            if(nikome_ari === 0){
+                ikkodake  = 1;
+                itchi_koko = itchi_temp;
+                //itchi = itchi_koko;//20200627追加
+                //sheet.getRange("I6").setValue(itchi);//指定したセルに値を書き込む
+            }
+            
+            itchi_ex  = itchi_now;
+            itchi_now = itchi_temp;
+ 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+             if(nikome_ari === 1){//2個目が見つかったら比較する
+                //sheet.getRange("I7").setValue("nikome_ari");//指定したセルに値を書き込む
+                var prior_temp = "H" + itchi_koko;//priorityのセル
+                var prior_ex = "H" + itchi_now;//1個前のpriorityのセル
+                var pvalu_temp = sheet.getRange(prior_temp).getValue();//priorityの値を取り出す
+                var pvalu_ex = sheet.getRange(prior_ex).getValue();//1個前のpriorityの値を取り出す
+                
+                //var proor = "L" + itchi_ex;
+                //sheet.getRange(proor).setValue("temp");//指定したセルに値を書き込む
+                
+                if(pvalu_temp > pvalu_ex){
+                    //itchi = itchi_temp;
+                    //sheet.getRange("I4").setValue("大きい");//指定したセルに値を書き込む
+                    //flag = lastRow + 1;
+                }else if(pvalu_temp < pvalu_ex){
+                    itchi_koko = itchi_temp;
+                    //sheet.getRange("I5").setValue("小さい");//指定したセルに値を書き込む
+                    p_counter += 1;
+                    if(p_counter >= 3){
+                        flag = lastRow + 1;
+                    }
+                }else if(pvalu_temp === pvalu_ex){
+                    //itchi = itchi_temp;
+                    //sheet.getRange("I6").setValue("一致");//指定したセルに値を書き込む
+                    if(pvalu_temp >= 0){
+                        flag = lastRow + 1;
+                    }
+                }
+            }//if(nikome_ari === 1){
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*            
+
+            if(nikome_ari === 1){//2個目が見つかったら比較する
+                var prior_temp = "H" + itchi_temp;//priorityのセル
+                var prior_ex = "H" + itchi_ex;//1個前のpriorityのセル
+                var pvalu_temp = sheet.getRange(prior_temp).getValue();//priorityの値を取り出す
+                var pvalu_ex = sheet.getRange(prior_ex).getValue();//1個前のpriorityの値を取り出す
+                //var dayonee = "I" + itchi_temp;
+                //var dayonoo = "I" + itchi_ex;
+                //sheet.getRange(dayonee).setValue("test");//指定したセルに値を書き込む                
+                //sheet.getRange(dayonoo).setValue("testoo");//指定したセルに値を書き込む                
+                
+                if(pvalu_temp > pvalu_ex){
+                    itchi = itchi_temp;
+                    //sheet.getRange("L4").setValue("大きい");//指定したセルに値を書き込む
+                    flag = lastRow + 1;
+                }else if(pvalu_temp < pvalu_ex){
+                    //itchi = itchi_temp;
+                    //sheet.getRange("L5").setValue("小さい");//指定したセルに値を書き込む
+                    //flag = lastRow + 1;
+                }else if(pvalu_temp === pvalu_ex){
+                    //itchi = itchi_temp;
+                    //sheet.getRange("L6").setValue("一致");//指定したセルに値を書き込む
+                    if(pvalu_temp >= 0){
+                        flag = lastRow + 1;
+                    }
+                }
+            }//if(nikome_ari === 1){
+*/
+            
+            //sheet.getRange("I2").setValue(itchi);//指定したセルに値を書き込む
+            //sheet.getRange("I3").setValue(itchi_ex);//指定したセルに値を書き込む
+            
+            itchi_temp += 1;//次のセルへ
+            place_temp = "E" + itchi_temp;//dateのセル
+            value_temp = sheet.getRange(place_temp).getValue();//dateの値を取り出す
+            }//else if
+        }//for
+    }//if (dcdc === 2){
+    
+    //Browser.msgBox(value);//SpreadSheet上で値を表示させる。
+    itchi = itchi_koko;//20200627追加
+    var eng  = "A" + itchi;//英語のセルの位置
+    var jap  = "B" + itchi;//日本語のセルの位置
+    
+    /*
+    if (dcdc  === 1){//Flutterから送られてきた値を参照。合っていた時
+    if (today === 0){//その日初めて正解した場合
+      var next = value + 5;//次に表示させる曜日を指定
+      //Browser.msgBox(date);//SpreadSheet上で値を表示させる。
+      }
+    else if (today >= 1){//その日は既に間違ってしまった場合
+      var next = value + 1;
+      }
+      if (next >= 8){
+          next -= 7;//8以上は認識されないため、-7
+      }
+      //sheet.getRange("G3").setValue(place);//指定したセルに値を書き込む//ここの状態では”E1”//メイン画面に戻るときに再試行されてしまっている
+      //sheet.getRange(place).setValue(next);//指定したセルに値を書き込む
+      //var rowData = sheet.appendRow([next]);//SpreadSheetへの書き込み
+    }else if(dcdc === 0){//Flutterから送られてきた値を参照。間違っていた時
+      var dayon = "F" + itchi;//todayのセルの値を参照
+      var day_val = sheet.getRange(dayon).getValue(next);
+      day_val += 1;//todayに1を足す
+      //sheet.getRange(dayon).setValue(day_val);//指定したセルに値を書き込む
+    }*/
+    if(tango_ari === 1){
+        var tempo = "G" + itchi;//dateのセル
+        sheet.getRange(tempo).setValue("1");//指定したセルに値を書き込む
+        var value_eng = sheet.getRange(eng).getValue();//placeで指定した箇所の値を取り出す。
+        var value_jap = sheet.getRange(jap).getValue();//placeで指定した箇所の値を取り出す。
+        //var result = {"status": value};//Flutterに返す値
+        var results = [value_eng, value_jap];
+        
+        var d_flag = "I" + 4;//todayのセルの値を参照
+        sheet.getRange(d_flag).setValue("1");//指定したセルに値を書き込む
+        
+    }else{//当日分の単語がすべて終了したら終わり
+        var results = ['本日の学習は終了です', 'お疲れさまでした'];
+    }
+    //Browser.msgBox(results);//SpreadSheet上で値を表示させる。
+    var result = {"status": results};//Flutterに返す値
+    
+    // Return result
+    return ContentService
+    .createTextOutput(JSON.stringify(result))//ここでFlutterに値が返される(と思う)、数字だけを返すとエラーになるかFlutter上での扱いが変わるらしい
+    .setMimeType(ContentService.MimeType.JSON);//WAKARAN
+}
+
