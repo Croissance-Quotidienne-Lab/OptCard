@@ -143,7 +143,7 @@ function doGet(request){
         sheet.getRange(d_flag).setValue("0");}
         if (dcdc === 2){
         var d_count = 0;
-        for (d_count = 0; d_count <= 20; d_count ++){
+        for (d_count = 0; d_count <= 10; d_count ++){
         var d_flag = "I" + 4;
         var df_val = sheet.getRange(d_flag).getValue();
         if (df_val === 1){
