@@ -129,7 +129,7 @@ function doGet(request){
         var d_flag = "I" + 4;
         sheet.getRange(d_flag).setValue("0");}
         else if (dcdc === 0 && owaridayo === 0){
-        var dayon = "E" + itchi;
+        var dayon = "F" + itchi;
         var daypl = sheet.getRange(dayon).getValue();
         daypl += 1;
         if(daypl == 9){daypl +=2;}
